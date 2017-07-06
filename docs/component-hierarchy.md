@@ -2,7 +2,7 @@
 
 * FormBuilder
   * Create
-    * rootform
+    * rootForm
     * subForm
   * Preview
   * Export

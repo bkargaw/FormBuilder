@@ -3,5 +3,5 @@ You can view the live version of the application hosted with github pages here o
 
 ### Setup
 1. Run npm install
-2. Run webpack
+2. Run webpack -w
 3. Open index.html

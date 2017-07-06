@@ -1,14 +1,16 @@
-import { Component } from 'react'
+import React from 'react'
 
-class Preview extends Component {
+class Preview extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render(){
-    <div>
-      Preview
-    </div>
+    return(
+      <div>
+        Preview
+      </div>
+    )
   }
 }
 

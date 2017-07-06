@@ -1,14 +1,16 @@
-import { Component } from 'react'
+import React from 'react'
 
-class Export extends Component {
+class Export extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render(){
-    <div>
-      Export
-    </div>
+    return(
+      <div>
+        Export
+      </div>
+    )
   }
 }
 
