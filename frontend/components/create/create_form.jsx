@@ -9,7 +9,9 @@ class CreateForm extends React.Component {
   }
 
   createInput(){
-    let id = this.props.forms.length + 1
+    let length = this.props.forms.length
+    let id = length ? this.props.forms[length -1].id + 1 : 1
+
     let form =
     {
       id,
@@ -24,10 +26,17 @@ class CreateForm extends React.Component {
   }
 
   render(){
-    debugger
-    let forms = this.props.forms.forEach( (el) =>
-      <MainForm data={ el }/>
-    )
+    let forms = <ul>
+        { this.props.forms.map((el) => {
+          if (el['formType'] == 'head'){
+            return (
+              <li key={el.id}><MainForm data={el}/></li>
+              )
+          }
+            })
+        }
+    </ul>
+
     return(
       <div>
           { forms }

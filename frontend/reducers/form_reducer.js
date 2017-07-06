@@ -11,11 +11,16 @@ const createReducer = (state = {} , action)=> {
       let id = action.form.id
       let newForm= {}
       newForm[id] = action.form
-      let newState = merge({}, state , newForm);
-      return newState;
+      return merge({}, state , newForm);
     case REMOVE_FORM:
       newState = merge({}, state);
-      delete newState[action.id];
+      let deleteIds = [action.id]
+      while(deleteIds.length){
+        let id = deleteIds.pop();
+        debugger
+        newState[id].sub_form.forEach((child_id) => {deleteIds.push(child_id)})
+        delete newState[id];
+      }
       return newState;
     default:
     return state;
