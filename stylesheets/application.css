@@ -1,1 +1,101 @@
+html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
 
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+input[type="password"],
+input[type="email"],
+input[type="text"],
+input[type="submit"],
+textarea,
+button {
+  /*
+  Get rid of native styling. Read more here:
+  http://css-tricks.com/almanac/properties/a/appearance/
+  */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+body {
+	overflow: hidden;
+	font-family: sans-serif;
+	font-size: 16px;
+}
+
+.header{
+  padding: 30px;
+  font-size: 30px;
+  background-color: floralwhite;
+  border-bottom: 2px solid gray;
+  margin-bottom: 5px;
+
+}
+
+.mainContaint{
+  margin: 0 auto;
+  width: 80%;
+  height: 90vh;
+  border: 2px solid gray;
+  border-radius: 20px;
+  overflow: scroll;
+}
+
+#mainTab .nav-tabs{
+  padding: 5px;
+}
+
+#mainTab .active a{
+  background-color: lightgreen;
+}
+
+.createForm{
+  padding-left: 10px;
+}
+
+.createForm Button{
+  margin: 10px;
+}
+
+.form{
+  width: 40%;
+  border: 2px solid gray;
+  margin: 20px;
+  padding: 5px;
+}
+
+.form .form-group{
+  padding: 5px;
+  width: 80%;
+  margin: 0 auto;
+}

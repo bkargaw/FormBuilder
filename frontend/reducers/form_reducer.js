@@ -1,5 +1,6 @@
 import {RECEIVE_FORM,
-        REMOVE_FORM} from '../actions/form_actions';
+        REMOVE_FORM,
+      REMOVE_CHILD_FORM} from '../actions/form_actions';
 
 import {merge} from 'lodash';
 
@@ -17,10 +18,17 @@ const createReducer = (state = {} , action)=> {
       let deleteIds = [action.id]
       while(deleteIds.length){
         let id = deleteIds.pop();
-        debugger
         newState[id].sub_form.forEach((child_id) => {deleteIds.push(child_id)})
         delete newState[id];
       }
+      return newState;
+    case REMOVE_CHILD_FORM:
+      newState = merge({}, state);
+      let parentId = action.ids[0];
+      let child_id = action.ids[1];
+      let array = newState[parentId]['sub_form'];
+      let index = array.indexOf(child_id);
+      array.splice(index, 1);
       return newState;
     default:
     return state;

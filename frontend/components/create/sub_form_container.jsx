@@ -1,25 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {receiveMain, removeMain} from '../../actions/main_form_actions';
+import {receiveForm, removeForm} from '../../actions/form_actions';
 
-import Main from './main_form'
+import SubForm from './sub_form'
 
 const mapStateToProps = (state, ownProps) =>  {
   return({
-    mains: Object.keys(state.mains).map(id => state.mains[id]),
+    forms: Object.keys(state.forms).map(id => state.forms[id]),
+    formsobj: state.forms
   });
 };
 
 const mapDispatchToProps = (dispatch,ownProps) => {
-  if(ownProps.updateTasks){
     return ({
-      receiveMain: (form) => dispatch(receiveMain(form)),
-      removeMain: (id) => dispatch(removeMain(id))
+      receiveForm: (form) => dispatch(receiveForm(form)),
+      removeForm: (id) => dispatch(removeForm(id))
     });
-  }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Main);
+)(SubForm);

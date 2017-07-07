@@ -6,7 +6,7 @@ import Create from './create_form'
 
 const mapStateToProps = (state, ownProps) =>  {
   return({
-    forms: Object.keys(state.forms).map(id => state.forms[id]),
+    forms: Object.keys(state.forms).map(id => state.forms[id])
   });
 };
 

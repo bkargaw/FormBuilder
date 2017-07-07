@@ -6977,6 +6977,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var RECEIVE_FORM = exports.RECEIVE_FORM = 'RECEIVE_FORM';
 var REMOVE_FORM = exports.REMOVE_FORM = 'REMOVE_FORM';
+var REMOVE_CHILD_FORM = exports.REMOVE_CHILD_FORM = 'REMOVE_CHILD_FORM';
 
 var receiveForm = exports.receiveForm = function receiveForm(form) {
   return {
@@ -6989,6 +6990,13 @@ var removeForm = exports.removeForm = function removeForm(id) {
   return {
     type: REMOVE_FORM,
     id: id
+  };
+};
+
+var removeChildForm = exports.removeChildForm = function removeChildForm(ids) {
+  return {
+    type: REMOVE_CHILD_FORM,
+    ids: ids
   };
 };
 
@@ -19745,22 +19753,31 @@ var App = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(
-          _reactBootstrap.Tabs,
-          { onSelect: this.handleSelect, defaultActiveKey: this.state.key, id: 'mainTab' },
+          'header',
+          { className: 'header' },
+          'Form Builder'
+        ),
+        _react2.default.createElement(
+          'article',
+          { className: 'mainContaint' },
           _react2.default.createElement(
-            _reactBootstrap.Tab,
-            { eventKey: 1, title: 'Create' },
-            _react2.default.createElement(_create_container2.default, null)
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.Tab,
-            { eventKey: 2, title: 'Preview' },
-            _react2.default.createElement(_preview_container2.default, null)
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.Tab,
-            { eventKey: 3, title: 'Export' },
-            _react2.default.createElement(_export_container2.default, null)
+            _reactBootstrap.Tabs,
+            { onSelect: this.handleSelect, defaultActiveKey: this.state.key, id: 'mainTab' },
+            _react2.default.createElement(
+              _reactBootstrap.Tab,
+              { eventKey: 1, title: 'Create' },
+              _react2.default.createElement(_create_container2.default, null)
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Tab,
+              { eventKey: 2, title: 'Preview' },
+              _react2.default.createElement(_preview_container2.default, null)
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Tab,
+              { eventKey: 3, title: 'Export' },
+              _react2.default.createElement(_export_container2.default, null)
+            )
           )
         )
       );
@@ -19908,7 +19925,7 @@ var CreateForm = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var forms = _react2.default.createElement(
+      var main_forms = _react2.default.createElement(
         'ul',
         null,
         this.props.forms.map(function (el) {
@@ -19924,8 +19941,8 @@ var CreateForm = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        null,
-        forms,
+        { className: 'createForm' },
+        main_forms,
         _react2.default.createElement(
           _reactBootstrap.Button,
           { onClick: this.createInput, bsStyle: 'primary' },
@@ -19959,6 +19976,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = __webpack_require__(112);
 
+var _main_form_container = __webpack_require__(230);
+
+var _main_form_container2 = _interopRequireDefault(_main_form_container);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19978,6 +19999,7 @@ var MainForm = function (_React$Component) {
     _this.state = {
       id: _this.props.data.id,
       formType: _this.props.data.formType,
+      parentId: _this.props.data.parentId,
       question: _this.props.data.question,
       type: _this.props.data.type,
       answer: _this.props.data.answer,
@@ -19999,14 +20021,16 @@ var MainForm = function (_React$Component) {
       var form = {
         id: id,
         formType: 'sub',
+        parentId: this.state.id,
+        condition: "",
         question: "",
         type: "",
         answer: "",
         sub_form: []
       };
       this.props.receiveForm(form);
-      debugger;
-      var sub_form = this.state.sub_form.push(id);
+      var sub_form = this.state.sub_form.slice(0);
+      sub_form.push(id);
       this.setState({ sub_form: sub_form }, function () {
         return _this2.props.receiveForm(_this2.state);
       });
@@ -20014,18 +20038,38 @@ var MainForm = function (_React$Component) {
   }, {
     key: 'deleteForm',
     value: function deleteForm() {
-      var id = this.props.data.id;
+      var id = this.state.id;
       this.props.removeForm(id);
+      if (this.state.formType == 'sub') {
+        var parentId = this.state.parentId;
+        this.props.removeChildForm([parentId, id]);
+      }
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this3 = this;
+
+      var sub_forms = _react2.default.createElement(
+        'ul',
+        null,
+        this.props.data.sub_form.map(function (id) {
+          var form = _this3.props.formsobj[id];
+          if (form['formType'] == 'sub') {
+            return _react2.default.createElement(
+              'li',
+              { key: form.id },
+              _react2.default.createElement(_main_form_container2.default, { data: form })
+            );
+          }
+        })
+      );
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'form',
-          { className: 'mainForm' },
+          { className: 'form mainform' },
           _react2.default.createElement(
             _reactBootstrap.FormGroup,
             {
@@ -20077,7 +20121,8 @@ var MainForm = function (_React$Component) {
             { onClick: this.deleteForm, bsStyle: 'danger' },
             'Delete'
           )
-        )
+        ),
+        sub_forms
       );
     }
   }]);
@@ -20116,7 +20161,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     forms: Object.keys(state.forms).map(function (id) {
       return state.forms[id];
-    })
+    }),
+    formsobj: state.forms
   };
 };
 
@@ -20124,6 +20170,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     receiveForm: function receiveForm(form) {
       return dispatch((0, _form_actions.receiveForm)(form));
+    },
+    removeChildForm: function removeChildForm(ids) {
+      return dispatch((0, _form_actions.removeChildForm)(ids));
     },
     removeForm: function removeForm(id) {
       return dispatch((0, _form_actions.removeForm)(id));
@@ -20321,12 +20370,21 @@ var createReducer = function createReducer() {
         var deleteIds = [action.id];
         while (deleteIds.length) {
           var _id = deleteIds.pop();
-          debugger;
           newState[_id].sub_form.forEach(function (child_id) {
             deleteIds.push(child_id);
           });
           delete newState[_id];
         }
+        return {
+          v: newState
+        };
+      case _form_actions.REMOVE_CHILD_FORM:
+        newState = (0, _lodash.merge)({}, state);
+        var parentId = action.ids[0];
+        var child_id = action.ids[1];
+        var array = newState[parentId]['sub_form'];
+        var index = array.indexOf(child_id);
+        array.splice(index, 1);
         return {
           v: newState
         };

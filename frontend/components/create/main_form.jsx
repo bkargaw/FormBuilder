@@ -1,6 +1,8 @@
 import React from 'react';
 import {FormGroup, ControlLabel,
         FormControl, Button} from 'react-bootstrap';
+import MF from './main_form_container'
+
 
 class MainForm extends React.Component {
   constructor(props) {
@@ -8,6 +10,7 @@ class MainForm extends React.Component {
     this.state ={
       id: this.props.data.id,
       formType: this.props.data.formType,
+      parentId: this.props.data.parentId,
       question: this.props.data.question,
       type: this.props.data.type,
       answer: this.props.data.answer,
@@ -25,26 +28,43 @@ class MainForm extends React.Component {
     {
       id,
       formType: 'sub',
+      parentId: this.state.id,
+      condition: "",
       question: "",
       type: "",
       answer: "",
       sub_form: []
     }
     this.props.receiveForm(form);
-    debugger
-    let sub_form = this.state.sub_form.push(id)
+    let sub_form = this.state.sub_form.slice(0);
+    sub_form.push(id);
     this.setState({sub_form}, () => this.props.receiveForm(this.state))
   }
 
   deleteForm(){
-    let id = this.props.data.id
+    let id = this.state.id
     this.props.removeForm(id)
+    if (this.state.formType == 'sub') {
+      let parentId = this.state.parentId
+      this.props.removeChildForm([parentId,id])
+    }
   }
 
   render(){
+    let sub_forms = <ul>
+        {this.props.data.sub_form.map((id) => {
+          let form = this.props.formsobj[id]
+          if (form['formType'] == 'sub'){
+            return (
+              <li key={form.id}><MF data={form}/></li>
+              )
+          }
+            })
+        }
+    </ul>
     return(
       <div>
-        <form className='mainForm'>
+        <form className='form mainform'>
           <FormGroup
              id="formControlsText">
             <ControlLabel>Question</ControlLabel>
@@ -63,8 +83,8 @@ class MainForm extends React.Component {
           </FormGroup>
           <Button onClick= {this.createSubForm} bsStyle="primary">Add Sub-Input</Button>
           <Button onClick= {this.deleteForm} bsStyle="danger">Delete</Button>
-
         </form>
+        { sub_forms }
       </div>
     )
   }

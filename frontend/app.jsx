@@ -19,11 +19,14 @@ class App extends React.Component {
   render(){
     return (
       <div>
-        <Tabs onSelect={this.handleSelect} defaultActiveKey={this.state.key} id="mainTab">
-          <Tab eventKey={1} title="Create"><Create /></Tab>
-          <Tab eventKey={2} title="Preview"><Preview /></Tab>
-          <Tab eventKey={3} title="Export"><Export /></Tab>
-        </Tabs>
+        <header className= 'header'>Form Builder</header>
+        <article className = 'mainContaint'>
+          <Tabs onSelect={this.handleSelect} defaultActiveKey={this.state.key} id="mainTab">
+            <Tab eventKey={1} title="Create"><Create /></Tab>
+            <Tab eventKey={2} title="Preview"><Preview /></Tab>
+            <Tab eventKey={3} title="Export"><Export /></Tab>
+          </Tabs>
+        </article>
       </div>
     )
   }

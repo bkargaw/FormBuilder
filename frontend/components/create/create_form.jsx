@@ -26,8 +26,8 @@ class CreateForm extends React.Component {
   }
 
   render(){
-    let forms = <ul>
-        { this.props.forms.map((el) => {
+    let main_forms = <ul>
+        {this.props.forms.map((el) => {
           if (el['formType'] == 'head'){
             return (
               <li key={el.id}><MainForm data={el}/></li>
@@ -38,8 +38,8 @@ class CreateForm extends React.Component {
     </ul>
 
     return(
-      <div>
-          { forms }
+      <div className = 'createForm'>
+          { main_forms }
          <Button onClick= {this.createInput} bsStyle="primary">Add Input</Button>
       </div>
     )
