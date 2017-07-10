@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Preview from './preview'
+import PreviewForm from './preview_form'
 
 const mapStateToProps = (state, ownProps) =>  {
   return({
-    forms: Object.keys(state.forms).map(id => state.forms[id])
+    forms: Object.keys(state.forms).map(id => state.forms[id]),
+    formsobj: state.forms
   });
 };
 
@@ -18,4 +19,4 @@ const mapStateToProps = (state, ownProps) =>  {
 export default connect(
   mapStateToProps,
   null
-)(Preview);
+)(PreviewForm);

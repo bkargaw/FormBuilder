@@ -18,7 +18,6 @@ class CreateForm extends React.Component {
       formType: 'head',
       question: "",
       type: "",
-      answer: "",
       sub_form: []
     }
     this.props.receiveForm(form);

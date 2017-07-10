@@ -88,7 +88,7 @@ body {
 }
 
 .form{
-  width: 40%;
+  width: 45%;
   border: 2px solid gray;
   margin: 20px;
   padding: 5px;
@@ -98,4 +98,17 @@ body {
   padding: 5px;
   width: 80%;
   margin: 0 auto;
+}
+
+/*.condition{
+  display: flex;
+}*/
+
+.condition input{
+  width: 40%;
+  height: 16px;
+}
+.condition select{
+  width: 40%;
+  display: inline;
 }
