@@ -59,9 +59,24 @@ body {
   background-color: floralwhite;
   border-bottom: 2px solid gray;
   margin-bottom: 5px;
-
 }
 
+.splashPage{
+  background-image: url('https://ymedialabs.com/wp-content/uploads/2015/12/syncplicity_hero-1-1894x1080.jpg');
+  background-attachment: fixed;
+  background-position: center 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+.splashPage button{
+  background-color: lightblue;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  font-size: 20px;
+}
 .mainContaint{
   margin: 0 auto;
   width: 80%;

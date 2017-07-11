@@ -7,6 +7,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import Create from './components/create/create_container';
 import Preview from './components/preview/preview_container';
 import Export from './components/export/export_container';
+import splashPage from './splash_page'
 
 class Root extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class Root extends React.Component {
       <Provider store={ store }>
         <Router history={ hashHistory }>
           <Route path='/' component={ App }>
+            <IndexRoute component={splashPage} />
             <Route path='/create' component={ Create }/>
             <Route path='/preview' component={ Preview }/>
             <Route path='/export' component={ Export }/>
