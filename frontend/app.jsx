@@ -1,31 +1,33 @@
 import React from 'react';
 import {Tabs, Tab} from 'react-bootstrap';
-import Create from './components/create/create_container';
-import Preview from './components/preview/preview_container';
-import Export from './components/export/export_container';
+import {hashHistory} from 'react-router';
 
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={tab: 1}
+    this.state ={tab: 'create'}
+
   }
 
-  handleSelect(tab) {
-   this.setState({tab});
+  chagePath(tab) {
+    hashHistory.push(`/${tab}`)
  }
 
   render(){
+
+    let children = this.props.children;
     return (
       <div>
         <header className= 'header'>Form Builder</header>
-        <article className = 'mainContaint'>
-          <Tabs onSelect={this.handleSelect} defaultActiveKey={this.state.tab} id="mainTab">
-            <Tab eventKey={1} title="Create"><Create tab={this.state.tab}/></Tab>
-            <Tab eventKey={2} title="Preview"><Preview tab={this.state.tab} /></Tab>
-            <Tab eventKey={3} title="Export"><Export tab={this.state.tab}/></Tab>
+          <Tabs onSelect={this.chagePath} defaultActiveKey={'none'} id="mainTab">
+            <Tab eventKey={'create'} title="Create"></Tab>
+            <Tab eventKey={'preview'} title="Preview"></Tab>
+            <Tab eventKey={'export'} title="Export"></Tab>
           </Tabs>
+        <article className = 'mainContaint'>
+          {children}
         </article>
       </div>
     )

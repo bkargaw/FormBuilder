@@ -98,6 +98,7 @@ class MainForm extends React.Component {
                     <FormControl
                       onChange={this.update('question')}
                       type="text"
+                      value = {this.state.question}
                       placeholder="Enter text" />
                   </FormGroup>
 
@@ -106,7 +107,8 @@ class MainForm extends React.Component {
                       <ControlLabel>Type</ControlLabel>
                       <FormControl
                         onChange={this.update('type')}
-                        componentClass="select" placeholder="select">
+                        componentClass="select" value = {this.state.type}
+                        placeholder="select">
                         <option value="">select</option>
                         <option value="Yes/No">Yes/No</option>
                         <option value="Text">Text</option>

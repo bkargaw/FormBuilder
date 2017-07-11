@@ -1,4 +1,6 @@
 import React from 'react'
+import {FormGroup, ControlLabel,
+        FormControl} from 'react-bootstrap';
 
 class Export extends React.Component {
   constructor(props) {
@@ -6,9 +8,14 @@ class Export extends React.Component {
   }
 
   render(){
+    let forms = JSON.stringify(this.props.formsobj)
+    window.localStorage.setItem('forms', forms)
     return(
       <div>
-        Export
+        <FormGroup controlId="formControlsTextarea">
+          <FormControl componentClass="textarea" value = {forms}
+                        placeholder="textarea" />
+        </FormGroup>
       </div>
     )
   }
