@@ -21,7 +21,8 @@ class App extends React.Component {
     return (
       <div>
         <header className= 'header'>Form Builder</header>
-          <Tabs onSelect={this.chagePath} defaultActiveKey={'none'} id="mainTab">
+          <Tabs onSelect={this.chagePath}
+            defaultActiveKey={'none'} id="mainTab">
             <Tab eventKey={'create'} title="Create"></Tab>
             <Tab eventKey={'preview'} title="Preview"></Tab>
             <Tab eventKey={'export'} title="Export"></Tab>

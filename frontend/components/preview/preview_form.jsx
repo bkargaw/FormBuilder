@@ -17,6 +17,7 @@ class PreviewForm extends React.Component {
   }
 
   render(){
+    let indent= {}
     let sub_forms = <ul>
         {this.props.data.sub_form.map((id) => {
           let form = this.props.formsobj[id]
@@ -75,12 +76,13 @@ class PreviewForm extends React.Component {
 
 
     if (this.props.data.formType == 'head'){
-      content = <form className= 'previewForm head'>
+      content = <form className= 'form'>
                   {question}
                   {input}
                 </form>
 
     }else{
+      indent = {marginLeft: "50px"}
       let parentAnswer = this.props.parentAnswer;
       let condition = this.props.data.condition;
       let condition_value = this.props.data.condition_value;
@@ -97,11 +99,11 @@ class PreviewForm extends React.Component {
           switch (condition) {
             case "Greater than":
               if (parentAnswer && condition_value
-                  && parentAnswer < condition_value) display_child = true;
+                  && parentAnswer > condition_value) display_child = true;
               break;
             case "Less than":
               if (parentAnswer && condition_value
-                  && parentAnswer > condition_value) display_child = true;
+                  && parentAnswer < condition_value) display_child = true;
               break;
             case 'Equals':
               if (parentAnswer && condition_value
@@ -118,7 +120,7 @@ class PreviewForm extends React.Component {
         default:
       }
       if (display_child){
-        content = <form className= 'previewForm sub'>
+        content = <form className= 'form'>
                   {question}
                   {input}
                 </form>
@@ -126,7 +128,7 @@ class PreviewForm extends React.Component {
     }
 
     return(
-      <div>
+      <div style={indent}>
         {content}
         {sub_forms}
       </div>

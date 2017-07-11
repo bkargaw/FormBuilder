@@ -27,7 +27,6 @@ class Root extends React.Component {
 document.addEventListener('DOMContentLoaded', () => {
   let forms = window.localStorage.getItem('forms', forms)
   let preloadedState = forms ? {forms: JSON.parse(forms)} : {}
-  debugger
   let store = configureStore(preloadedState);
   window.store = store;
   let root = document.getElementById('root');

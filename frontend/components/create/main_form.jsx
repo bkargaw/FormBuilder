@@ -10,12 +10,13 @@ class MainForm extends React.Component {
     let id = this.props.id
     this.state = {
       id: this.props.id,
-      formType: this.props.formType,
       formType: this.props.formsobj[id].formType,
       parentId:  this.props.formsobj[id].parentId,
       question: this.props.formsobj[id].question,
       type: this.props.formsobj[id].type,
-      sub_form:  this.props.formsobj[id].sub_form
+      sub_form:  this.props.formsobj[id].sub_form,
+      condition:  this.props.formsobj[id].condition,
+      condition_value:  this.props.formsobj[id].condition_value
     }
     this.createSubForm = this.createSubForm.bind(this);
     this.deleteForm = this.deleteForm.bind(this);
@@ -32,8 +33,10 @@ class MainForm extends React.Component {
       let question =  newProps.formsobj[id].question
       let type =  newProps.formsobj[id].type
       let sub_form =   newProps.formsobj[id].sub_form
+      let condition =   newProps.formsobj[id].condition
+      let condition_value =   newProps.formsobj[id].condition_value
       this.setState({
-        formType, parentId, question, type, sub_form
+        formType, parentId, question, type, sub_form, condition, condition_value
       })
     }
   }
@@ -76,7 +79,7 @@ class MainForm extends React.Component {
   }
 
   render(){
-
+    let indent = {}
     let id = this.state.id
     let sub_forms = <ul>
         {this.props.formsobj[id].sub_form.map((id) => {
@@ -123,7 +126,7 @@ class MainForm extends React.Component {
                          bsStyle="danger">Delete</Button>
                      </div>
     if (this.state.formType == 'head'){
-      content =   <form className='form mainForm'>
+      content =   <form className='form createFormSection'>
                       { question }
                       { type }
                       { buttons }
@@ -131,6 +134,7 @@ class MainForm extends React.Component {
 
     }else{
       let condition;
+      indent = {marginLeft: "50px"}
       let parentId = this.state.parentId
         switch (this.props.formsobj[parentId].type) {
           case 'Text':
@@ -138,9 +142,10 @@ class MainForm extends React.Component {
                           <FormGroup controlId="formControlsSelect">
                             <ControlLabel>Condition</ControlLabel>
                             <FormControl componentClass="select" placeholder="select"
-                              onChange={this.update('condition')}>
+                              onChange={this.update('condition')}
+                              value ={this.state.condition} >
                               <option value="">select</option>
-                              <option value="Eqauls">Eqauls</option>
+                              <option value="Equals">Equals</option>
                             </FormControl>
                           </FormGroup>
                           <FormGroup
@@ -148,6 +153,7 @@ class MainForm extends React.Component {
                             <FormControl
                               onChange={this.update('condition_value')}
                               type="text"
+                              value ={this.state.condition_value}
                               placeholder="Enter text" />
                           </FormGroup>
                         </div>
@@ -157,7 +163,8 @@ class MainForm extends React.Component {
                           <FormGroup controlId="formControlsSelect">
                             <ControlLabel>Condition</ControlLabel>
                             <FormControl componentClass="select" placeholder="select"
-                              onChange={this.update('condition')} inline>
+                              onChange={this.update('condition')}
+                              value ={this.state.condition} >
                               <option value="">select</option>
                               <option value="Equals">Equals</option>
                               <option value="Greater than">Greater than</option>
@@ -169,6 +176,7 @@ class MainForm extends React.Component {
                             <FormControl
                               onChange={this.update('condition_value')}
                               type="number"
+                              value ={this.state.condition_value}
                               placeholder="Enter number" inline/>
                           </FormGroup>
                         </div>
@@ -179,12 +187,14 @@ class MainForm extends React.Component {
                           <FormGroup controlId="formControlsSelect">
                             <ControlLabel>Condition</ControlLabel>
                             <FormControl componentClass="select" placeholder="select"
-                              onChange={this.update('condition')}>
+                              onChange={this.update('condition')}
+                              value ={this.state.condition} >
                               <option value="">select</option>
-                              <option value="Eqauls">Eqauls</option>
+                              <option value="Equals">Equals</option>
                             </FormControl>
                             <FormControl componentClass="select" placeholder="select"
-                              onChange={this.update('condition_value')}>
+                              onChange={this.update('condition_value')}
+                              value ={this.state.condition_value} >
                               <option value="">select</option>
                               <option value="Yes">Yes</option>
                               <option value="No">No</option>
@@ -194,7 +204,7 @@ class MainForm extends React.Component {
             break;
           default:
         }
-      content =   <form className='form subForm'>
+      content =   <form className='form createFormSection'>
                       { condition }
                       { question }
                       { type }
@@ -203,7 +213,7 @@ class MainForm extends React.Component {
     }
 
       return(
-      <div>
+      <div style= {indent}>
         { content }
         { sub_forms }
       </div>

@@ -11,10 +11,10 @@ class Export extends React.Component {
     let forms = JSON.stringify(this.props.formsobj)
     window.localStorage.setItem('forms', forms)
     return(
-      <div>
+      <div className='export'>
         <FormGroup controlId="formControlsTextarea">
-          <FormControl componentClass="textarea" value = {forms}
-                        placeholder="textarea" />
+          <FormControl  componentClass="textarea" value = {forms}
+                        placeholder="textarea" readOnly/>
         </FormGroup>
       </div>
     )
