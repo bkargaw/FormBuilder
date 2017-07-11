@@ -9,11 +9,11 @@ import Export from './components/export/export_container';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={key: 1}
+    this.state ={tab: 1}
   }
 
-  handleSelect(key) {
-   this.setState({key});
+  handleSelect(tab) {
+   this.setState({tab});
  }
 
   render(){
@@ -21,10 +21,10 @@ class App extends React.Component {
       <div>
         <header className= 'header'>Form Builder</header>
         <article className = 'mainContaint'>
-          <Tabs onSelect={this.handleSelect} defaultActiveKey={this.state.key} id="mainTab">
-            <Tab eventKey={1} title="Create"><Create /></Tab>
-            <Tab eventKey={2} title="Preview"><Preview /></Tab>
-            <Tab eventKey={3} title="Export"><Export /></Tab>
+          <Tabs onSelect={this.handleSelect} defaultActiveKey={this.state.tab} id="mainTab">
+            <Tab eventKey={1} title="Create"><Create tab={this.state.tab}/></Tab>
+            <Tab eventKey={2} title="Preview"><Preview tab={this.state.tab} /></Tab>
+            <Tab eventKey={3} title="Export"><Export tab={this.state.tab}/></Tab>
           </Tabs>
         </article>
       </div>

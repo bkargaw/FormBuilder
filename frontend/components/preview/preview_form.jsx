@@ -84,9 +84,9 @@ class PreviewForm extends React.Component {
       let parentAnswer = this.props.parentAnswer;
       let condition = this.props.data.condition;
       let condition_value = this.props.data.condition_value;
-
+      let parent_type = this.props.formsobj[this.props.data.parentId].type
       let display_child = false;
-      switch (type) {
+      switch (parent_type) {
         case 'Text':
           if (parentAnswer && condition_value &&
               parentAnswer.toLowerCase() == condition_value.toLowerCase()){
@@ -117,7 +117,6 @@ class PreviewForm extends React.Component {
           break;
         default:
       }
-
       if (display_child){
         content = <form className= 'previewForm sub'>
                   {question}

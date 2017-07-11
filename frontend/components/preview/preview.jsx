@@ -6,6 +6,9 @@ class Preview extends React.Component {
     super(props);
   }
 
+  componentWillReceiveProps(newProps){
+  }
+
   render(){
     let main_forms = <ul>
         {this.props.forms.map((el) => {
@@ -18,12 +21,12 @@ class Preview extends React.Component {
         }
     </ul>
 
-    return(
-      <div>
-        {main_forms}
-      </div>
-    )
-  }
+        return(
+          <div>
+            {main_forms}
+          </div>
+        )
+      }
 }
 
 export default Preview;

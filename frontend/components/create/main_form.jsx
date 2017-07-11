@@ -7,24 +7,33 @@ import MF from './main_form_container'
 class MainForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
-      id: this.props.data.id,
-      formType: this.props.data.formType,
-      parentId: this.props.data.parentId,
-      question: this.props.data.question,
-      type: this.props.data.type,
-      sub_form: this.props.data.sub_form
+    let id = this.props.id
+    this.state = {
+      id: this.props.id,
+      formType: this.props.formType,
+      formType: this.props.formsobj[id].formType,
+      parentId:  this.props.formsobj[id].parentId,
+      question: this.props.formsobj[id].question,
+      type: this.props.formsobj[id].type,
+      sub_form:  this.props.formsobj[id].sub_form
     }
     this.createSubForm = this.createSubForm.bind(this);
     this.deleteForm = this.deleteForm.bind(this);
-    this.update = this.update.bind(this);
+  }
+
+  componentDidMount(){
   }
 
   componentWillReceiveProps(newProps){
+    let id = this.state.id
     if (newProps) {
-      debugger
+      let formType =  newProps.formsobj[id].formType
+      let parentId =   newProps.formsobj[id].parentId
+      let question =  newProps.formsobj[id].question
+      let type =  newProps.formsobj[id].type
+      let sub_form =   newProps.formsobj[id].sub_form
       this.setState({
-        sub_form: newProps.formsobj[this.state.id].sub_form
+        formType, parentId, question, type, sub_form
       })
     }
   }
@@ -44,10 +53,9 @@ class MainForm extends React.Component {
       type: "",
       sub_form: []
     }
-    this.props.receiveForm(form);
     let sub_form = this.state.sub_form.slice(0);
     if (!sub_form.includes(id)) sub_form.push(id);
-    this.setState({sub_form}, () => this.props.receiveForm(this.state))
+    this.setState({sub_form}, () => {this.props.receiveForms([this.state, form])})
   }
 
   deleteForm(){
@@ -55,7 +63,7 @@ class MainForm extends React.Component {
     this.props.removeForm(id)
     if (this.state.formType == 'sub') {
       let parentId = this.state.parentId
-      this.props.removeChildForm([parentId,id])
+      this.props.removeChildForm([parentId, id])
     }
   }
 
@@ -68,12 +76,16 @@ class MainForm extends React.Component {
   }
 
   render(){
+
+    let id = this.state.id
     let sub_forms = <ul>
-        {this.props.data.sub_form.map((id) => {
+        {this.props.formsobj[id].sub_form.map((id) => {
           let form = this.props.formsobj[id]
           if (form['formType'] == 'sub'){
             return (
-              <li key={form.id}><MF data={form}/></li>
+              <li key={form.id}><MF id={id}
+                                formType={'sub'}/>
+              </li>
               )
           }
             })

@@ -6976,6 +6976,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var RECEIVE_FORM = exports.RECEIVE_FORM = 'RECEIVE_FORM';
+var RECEIVE_FORMS = exports.RECEIVE_FORMS = 'RECEIVE_FORMS';
 var REMOVE_FORM = exports.REMOVE_FORM = 'REMOVE_FORM';
 var REMOVE_CHILD_FORM = exports.REMOVE_CHILD_FORM = 'REMOVE_CHILD_FORM';
 
@@ -6983,6 +6984,12 @@ var receiveForm = exports.receiveForm = function receiveForm(form) {
   return {
     type: RECEIVE_FORM,
     form: form
+  };
+};
+var receiveForms = exports.receiveForms = function receiveForms(forms) {
+  return {
+    type: RECEIVE_FORMS,
+    forms: forms
   };
 };
 
@@ -10887,6 +10894,9 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
+    receiveForms: function receiveForms(forms) {
+      return dispatch((0, _form_actions.receiveForms)(forms));
+    },
     receiveForm: function receiveForm(form) {
       return dispatch((0, _form_actions.receiveForm)(form));
     },
@@ -19787,14 +19797,14 @@ var App = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    _this.state = { key: 1 };
+    _this.state = { tab: 1 };
     return _this;
   }
 
   _createClass(App, [{
     key: 'handleSelect',
-    value: function handleSelect(key) {
-      this.setState({ key: key });
+    value: function handleSelect(tab) {
+      this.setState({ tab: tab });
     }
   }, {
     key: 'render',
@@ -19812,21 +19822,21 @@ var App = function (_React$Component) {
           { className: 'mainContaint' },
           _react2.default.createElement(
             _reactBootstrap.Tabs,
-            { onSelect: this.handleSelect, defaultActiveKey: this.state.key, id: 'mainTab' },
+            { onSelect: this.handleSelect, defaultActiveKey: this.state.tab, id: 'mainTab' },
             _react2.default.createElement(
               _reactBootstrap.Tab,
               { eventKey: 1, title: 'Create' },
-              _react2.default.createElement(_create_container2.default, null)
+              _react2.default.createElement(_create_container2.default, { tab: this.state.tab })
             ),
             _react2.default.createElement(
               _reactBootstrap.Tab,
               { eventKey: 2, title: 'Preview' },
-              _react2.default.createElement(_preview_container2.default, null)
+              _react2.default.createElement(_preview_container2.default, { tab: this.state.tab })
             ),
             _react2.default.createElement(
               _reactBootstrap.Tab,
               { eventKey: 3, title: 'Export' },
-              _react2.default.createElement(_export_container2.default, null)
+              _react2.default.createElement(_export_container2.default, { tab: this.state.tab })
             )
           )
         )
@@ -19982,12 +19992,12 @@ var CreateForm = function (_React$Component) {
             return _react2.default.createElement(
               'li',
               { key: el.id },
-              _react2.default.createElement(_main_form_container2.default, { data: el })
+              _react2.default.createElement(_main_form_container2.default, { id: el.id,
+                formType: 'head' })
             );
           }
         })
       );
-
       return _react2.default.createElement(
         'div',
         { className: 'createForm' },
@@ -20043,31 +20053,37 @@ var MainForm = function (_React$Component) {
   _inherits(MainForm, _React$Component);
 
   function MainForm(props) {
+    var _this$state;
+
     _classCallCheck(this, MainForm);
 
     var _this = _possibleConstructorReturn(this, (MainForm.__proto__ || Object.getPrototypeOf(MainForm)).call(this, props));
 
-    _this.state = {
-      id: _this.props.data.id,
-      formType: _this.props.data.formType,
-      parentId: _this.props.data.parentId,
-      question: _this.props.data.question,
-      type: _this.props.data.type,
-      sub_form: _this.props.data.sub_form
-    };
+    var id = _this.props.id;
+    _this.state = (_this$state = {
+      id: _this.props.id,
+      formType: _this.props.formType
+    }, _defineProperty(_this$state, 'formType', _this.props.formsobj[id].formType), _defineProperty(_this$state, 'parentId', _this.props.formsobj[id].parentId), _defineProperty(_this$state, 'question', _this.props.formsobj[id].question), _defineProperty(_this$state, 'type', _this.props.formsobj[id].type), _defineProperty(_this$state, 'sub_form', _this.props.formsobj[id].sub_form), _this$state);
     _this.createSubForm = _this.createSubForm.bind(_this);
     _this.deleteForm = _this.deleteForm.bind(_this);
-    _this.update = _this.update.bind(_this);
     return _this;
   }
 
   _createClass(MainForm, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {}
+  }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(newProps) {
+      var id = this.state.id;
       if (newProps) {
-        debugger;
+        var formType = newProps.formsobj[id].formType;
+        var parentId = newProps.formsobj[id].parentId;
+        var question = newProps.formsobj[id].question;
+        var type = newProps.formsobj[id].type;
+        var sub_form = newProps.formsobj[id].sub_form;
         this.setState({
-          sub_form: newProps.formsobj[this.state.id].sub_form
+          formType: formType, parentId: parentId, question: question, type: type, sub_form: sub_form
         });
       }
     }
@@ -20089,11 +20105,10 @@ var MainForm = function (_React$Component) {
         type: "",
         sub_form: []
       };
-      this.props.receiveForm(form);
       var sub_form = this.state.sub_form.slice(0);
       if (!sub_form.includes(id)) sub_form.push(id);
       this.setState({ sub_form: sub_form }, function () {
-        return _this2.props.receiveForm(_this2.state);
+        _this2.props.receiveForms([_this2.state, form]);
       });
     }
   }, {
@@ -20122,16 +20137,18 @@ var MainForm = function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
+      var id = this.state.id;
       var sub_forms = _react2.default.createElement(
         'ul',
         null,
-        this.props.data.sub_form.map(function (id) {
+        this.props.formsobj[id].sub_form.map(function (id) {
           var form = _this3.props.formsobj[id];
           if (form['formType'] == 'sub') {
             return _react2.default.createElement(
               'li',
               { key: form.id },
-              _react2.default.createElement(_main_form_container2.default, { data: form })
+              _react2.default.createElement(_main_form_container2.default, { id: id,
+                formType: 'sub' })
             );
           }
         })
@@ -20496,6 +20513,9 @@ var Preview = function (_React$Component) {
   }
 
   _createClass(Preview, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(newProps) {}
+  }, {
     key: 'render',
     value: function render() {
       var main_forms = _react2.default.createElement(
@@ -20587,13 +20607,25 @@ var createReducer = function createReducer() {
 
   Object.freeze(state);
   var newState = void 0;
+  var newForm = void 0;
+  var parentId = void 0;
+  var childId = void 0;
 
   var _ret = function () {
     switch (action.type) {
       case _form_actions.RECEIVE_FORM:
         var id = action.form.id;
-        var newForm = {};
+        newForm = {};
         newForm[id] = action.form;
+        return {
+          v: (0, _lodash.merge)({}, state, newForm)
+        };
+      case _form_actions.RECEIVE_FORMS:
+        parentId = action.forms[0].id;
+        childId = action.forms[1].id;
+        newForm = {};
+        newForm[parentId] = action.forms[0];
+        newForm[childId] = action.forms[1];
         return {
           v: (0, _lodash.merge)({}, state, newForm)
         };
@@ -20602,8 +20634,8 @@ var createReducer = function createReducer() {
         var deleteIds = [action.id];
         while (deleteIds.length) {
           var _id = deleteIds.pop();
-          newState[_id].sub_form.forEach(function (child_id) {
-            deleteIds.push(child_id);
+          newState[_id].sub_form.forEach(function (id) {
+            deleteIds.push(id);
           });
           delete newState[_id];
         }
@@ -20612,10 +20644,10 @@ var createReducer = function createReducer() {
         };
       case _form_actions.REMOVE_CHILD_FORM:
         newState = (0, _lodash.merge)({}, state);
-        var parentId = action.ids[0];
-        var child_id = action.ids[1];
+        parentId = action.ids[0];
+        childId = action.ids[1];
         var array = newState[parentId]['sub_form'];
-        var index = array.indexOf(child_id);
+        var index = array.indexOf(childId);
         array.splice(index, 1);
         return {
           v: newState
@@ -59697,9 +59729,9 @@ var PreviewForm = function (_React$Component) {
         var parentAnswer = this.props.parentAnswer;
         var condition = this.props.data.condition;
         var condition_value = this.props.data.condition_value;
-
+        var parent_type = this.props.formsobj[this.props.data.parentId].type;
         var display_child = false;
-        switch (type) {
+        switch (parent_type) {
           case 'Text':
             if (parentAnswer && condition_value && parentAnswer.toLowerCase() == condition_value.toLowerCase()) {
               display_child = true;
@@ -59725,7 +59757,6 @@ var PreviewForm = function (_React$Component) {
             break;
           default:
         }
-
         if (display_child) {
           content = _react2.default.createElement(
             'form',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {receiveForm,
+import {receiveForms,
+        receiveForm,
         removeForm,
         removeChildForm} from '../../actions/form_actions';
 
@@ -14,6 +15,7 @@ const mapStateToProps = (state, ownProps) =>  {
 };
 
 const mapDispatchToProps = dispatch => ({
+  receiveForms: (forms) => dispatch(receiveForms(forms)),
   receiveForm: (form) => dispatch(receiveForm(form)),
   removeChildForm: (ids) => dispatch(removeChildForm(ids)),
   removeForm: (id) => dispatch(removeForm(id))
