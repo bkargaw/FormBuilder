@@ -3,6 +3,9 @@
 
 You can view the live version of the application hosted with github pages by using the link above or you can clone the github repo and run the setup commands from the terminal and view the application in the browser.
 
+### Clone
+1. git clone https://github.com/bkargaw/FormBuilder
+
 ### Setup
 1. Run npm install
 2. Run npm start
